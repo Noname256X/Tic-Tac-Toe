@@ -1,0 +1,77 @@
+using Microsoft.AspNetCore.SignalR;
+
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddSignalR();
+builder.Services.AddCors();
+
+var app = builder.Build();
+
+app.UseCors(policy => policy
+    .AllowAnyHeader()
+    .AllowAnyMethod()
+    .WithOrigins("http://localhost:5000", "https://localhost:5001")
+    .AllowCredentials());
+
+app.MapHub<GameHub>("/gamehub");
+
+app.Urls.Add("http://localhost:5000");
+app.Urls.Add("https://localhost:5001");
+app.Run();
+
+public class GameSession
+{
+    public string Player1 { get; set; }
+    public string Player2 { get; set; }
+    public string[] Board { get; } = new string[9];
+    public bool IsPlayer1Turn { get; set; } = true;
+}
+
+public class GameHub : Hub
+{
+    private static Dictionary<string, GameSession> _sessions = new();
+
+    public async Task CreateGame()
+    {
+        var sessionId = Guid.NewGuid().ToString();
+        _sessions[sessionId] = new GameSession { Player1 = Context.ConnectionId };
+        await Clients.Caller.SendAsync("GameCreated", sessionId);
+    }
+
+    public async Task JoinGame(string sessionId)
+    {
+        if (_sessions.TryGetValue(sessionId, out var session))
+        {
+            session.Player2 = Context.ConnectionId;
+            await Clients.Group(sessionId).SendAsync("GameStarted");
+        }
+    }
+
+    public async Task MakeMove(string sessionId, int cellIndex)
+    {
+        if (!_sessions.TryGetValue(sessionId, out var session)) return;
+
+        var playerSign = session.IsPlayer1Turn ? "X" : "O";
+        session.Board[cellIndex] = playerSign;
+
+        await Clients.Group(sessionId).SendAsync("MoveMade", cellIndex, playerSign);
+
+        if (CheckWin(session.Board, playerSign))
+            await Clients.Group(sessionId).SendAsync("GameWon", playerSign);
+
+        session.IsPlayer1Turn = !session.IsPlayer1Turn;
+    }
+
+    private bool CheckWin(string[] board, string sign)
+    {
+        for (var i = 0; i < 9; i += 3)
+            if (board[i] == sign && board[i + 1] == sign && board[i + 2] == sign)
+                return true;
+
+        for (var i = 0; i < 3; i++)
+            if (board[i] == sign && board[i + 3] == sign && board[i + 6] == sign)
+                return true;
+
+        return (board[0] == sign && board[4] == sign && board[8] == sign) ||
+               (board[2] == sign && board[4] == sign && board[6] == sign);
+    }
+}
