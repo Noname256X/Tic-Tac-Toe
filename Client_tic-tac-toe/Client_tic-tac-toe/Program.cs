@@ -13,7 +13,7 @@ namespace Client_tic_tac_toe
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Application.Run(new FirstPage());
         }
     }
 }
