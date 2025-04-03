@@ -43,6 +43,7 @@
 
   <!-- Файлы проекта -->
   <ItemGroup>
+    <Compile Include="ApiClient.cs" />
     <Compile Include="Form1.cs" />
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
@@ -89,6 +90,7 @@
     <EmbeddedResource Include="PageAutorization.resx">
       <DependentUpon>PageAutorization.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="PageModeSelection.resx" />
     <EmbeddedResource Include="PageRegistration.resx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

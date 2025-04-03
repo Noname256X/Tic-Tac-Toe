@@ -41,3 +41,6 @@ D:\Visual Studio 2022\Code C#\Tic-Tac-Toe\Server_tic-tac-toe\Server_tic-tac-toe\
 D:\Visual Studio 2022\Code C#\Tic-Tac-Toe\Server_tic-tac-toe\Server_tic-tac-toe\obj\Debug\net7.0\Server_tic-tac-toe.pdb
 D:\Visual Studio 2022\Code C#\Tic-Tac-Toe\Server_tic-tac-toe\Server_tic-tac-toe\obj\Debug\net7.0\Server_tic-tac-toe.genruntimeconfig.cache
 D:\Visual Studio 2022\Code C#\Tic-Tac-Toe\Server_tic-tac-toe\Server_tic-tac-toe\obj\Debug\net7.0\ref\Server_tic-tac-toe.dll
+D:\Visual Studio 2022\Code C#\Tic-Tac-Toe\Server_tic-tac-toe\Server_tic-tac-toe\bin\Debug\net7.0\BCrypt.Net-Core.dll
+D:\Visual Studio 2022\Code C#\Tic-Tac-Toe\Server_tic-tac-toe\Server_tic-tac-toe\bin\Debug\net7.0\Npgsql.dll
+D:\Visual Studio 2022\Code C#\Tic-Tac-Toe\Server_tic-tac-toe\Server_tic-tac-toe\bin\Debug\net7.0\System.Text.Json.dll

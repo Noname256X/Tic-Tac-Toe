@@ -7,18 +7,26 @@ namespace Client_tic_tac_toe
         public PageRegistration()
         {
             InitializeComponent();
-            //this.btnBack.Click += (s, e) => this.Close();
-            this.btnRegister.Click += btnRegister_Click;
+            this.StartPosition = FormStartPosition.CenterScreen;
         }
 
-        private void btnRegister_Click(object sender, System.EventArgs e)
+        private async void btnRegister_Click(object sender, EventArgs e)
         {
-            // Логика регистрации
-            if (ValidateInput())
+            if (string.IsNullOrWhiteSpace(txtNickname.Text) ||
+                string.IsNullOrWhiteSpace(txtPassword.Text))
             {
-                // Отправка данных на сервер
-                MessageBox.Show("Регистрация успешна!");
-                this.Close();
+                ApiClient.ShowError("Заполните все поля!");
+                return;
+            }
+
+            var success = await ApiClient.Register(txtNickname.Text, txtPassword.Text);
+            if (success)
+            {
+                ApiClient.NavigateTo(this, new PageModeSelection());
+            }
+            else
+            {
+                ApiClient.ShowError("Никнейм уже занят");
             }
         }
 

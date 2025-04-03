@@ -1,10 +1,93 @@
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SignalR;
+using Npgsql;
+using System.Security.Cryptography;
+using System.Text;
+using DotNetEnv;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSignalR();
 builder.Services.AddCors();
 
+// PostreSQL 
+Env.Load();
+
+var connectionString =
+    $"Host={Environment.GetEnvironmentVariable("DB_HOST")}; " +
+    $"Port={Environment.GetEnvironmentVariable("DB_PORT")}; " +
+    $"Username={Environment.GetEnvironmentVariable("DB_USERNAME")}; " +
+    $"Password={Environment.GetEnvironmentVariable("DB_PASSWORD")}; " +
+    $"Database={Environment.GetEnvironmentVariable("DB_NAME")}";
+var conn = new NpgsqlConnection(connectionString);
+try
+{
+    conn.Open();
+    Console.WriteLine("Successfully connected to PostgreSQL!");
+    conn.Close();
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"DB connection error: {ex.Message}");
+}
+
 var app = builder.Build();
+
+app.UseCors(policy => policy
+    .AllowAnyHeader()
+    .AllowAnyMethod()
+    .WithOrigins("http://localhost:5000")
+    .AllowCredentials());
+
+
+app.MapPost("/api/login", async (LoginRequest request) =>
+{
+    using var conn = new NpgsqlConnection(connectionString);
+    await conn.OpenAsync();
+
+    var cmd = new NpgsqlCommand(
+        @"SELECT password_hash FROM players WHERE username = @nickname",
+        conn);
+    cmd.Parameters.AddWithValue("nickname", request.Nickname);
+
+    var dbPassword = (await cmd.ExecuteScalarAsync())?.ToString();
+    var isValid = dbPassword != null && BCrypt.Net.BCrypt.Verify(request.Password, dbPassword);
+
+    return isValid ? Results.Ok() : Results.Unauthorized();
+});
+
+
+app.MapPost("/api/register", async (RegisterRequest request) =>
+{
+    using var conn = new NpgsqlConnection(connectionString);
+    await conn.OpenAsync();
+
+    try
+    {
+        var hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.Password);
+        var cmd = new NpgsqlCommand(
+            @"INSERT INTO players (username, password_hash) 
+            VALUES (@nickname, @password)",
+            conn);
+
+        cmd.Parameters.AddWithValue("nickname", request.Nickname);
+        cmd.Parameters.AddWithValue("password", hashedPassword);
+
+        await cmd.ExecuteNonQueryAsync();
+        Console.WriteLine($"User {request.Nickname} registered");
+        return Results.Ok();
+    }
+    catch (PostgresException ex) when (ex.SqlState == "23505")
+    {
+        Console.WriteLine($"Nickname conflict: {request.Nickname}");
+        return Results.Conflict("Nickname already exists");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Registration error: {ex.Message}");
+        return Results.Problem("Internal error");
+    }
+});
 
 app.UseCors(policy => policy
     .AllowAnyHeader()
@@ -17,6 +100,9 @@ app.MapHub<GameHub>("/gamehub");
 app.Urls.Add("http://localhost:5000");
 app.Urls.Add("https://localhost:5001");
 app.Run();
+
+public record LoginRequest(string Nickname, string Password);
+public record RegisterRequest(string Nickname, string Password);
 
 public class GameSession
 {

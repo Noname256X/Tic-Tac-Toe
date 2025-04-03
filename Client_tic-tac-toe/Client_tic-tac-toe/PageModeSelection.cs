@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace Client_tic_tac_toe
 {
@@ -15,6 +7,28 @@ namespace Client_tic_tac_toe
         public PageModeSelection()
         {
             InitializeComponent();
+            this.StartPosition = FormStartPosition.CenterScreen;
+        }
+
+        private void btnAccount_Click(object sender, EventArgs e)
+        {
+            var accountForm = new PageAccount();
+            accountForm.Show();
+            this.Hide();
+        }
+
+        private void btnCreateGame_Click(object sender, EventArgs e)
+        {
+            var gameForm = new PageGame();
+            gameForm.Show();
+            this.Hide();
+        }
+
+        private void btnJoinGame_Click(object sender, EventArgs e)
+        {
+            var lobbyForm = new PageLobby();
+            lobbyForm.Show();
+            this.Hide();
         }
     }
 }

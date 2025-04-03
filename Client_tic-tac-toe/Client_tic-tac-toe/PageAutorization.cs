@@ -8,22 +8,26 @@ namespace Client_tic_tac_toe
         public PageAutorization()
         {
             InitializeComponent();
+            this.StartPosition = FormStartPosition.CenterScreen;
         }
 
-        private void btnLogin_Click(object sender, EventArgs e)
+        private async void btnLogin_Click(object sender, EventArgs e)
         {
-            // Логика авторизации
-            string nickname = txtNickname.Text;
-            string password = txtPassword.Text;
-
-            if (CheckCredentials(nickname, password))
+            if (string.IsNullOrWhiteSpace(txtNickname.Text) ||
+                string.IsNullOrWhiteSpace(txtPassword.Text))
             {
-                MessageBox.Show("Успешный вход!");
-                this.Close();
+                ApiClient.ShowError("Заполните все поля!");
+                return;
+            }
+
+            var success = await ApiClient.Login(txtNickname.Text, txtPassword.Text);
+            if (success)
+            {
+                ApiClient.NavigateTo(this, new PageModeSelection());
             }
             else
             {
-                MessageBox.Show("Ошибка авторизации");
+                ApiClient.ShowError("Неверный логин или пароль");
             }
         }
 

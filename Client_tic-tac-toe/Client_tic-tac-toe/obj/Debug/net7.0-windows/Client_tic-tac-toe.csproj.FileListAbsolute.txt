@@ -148,3 +148,4 @@ D:\Visual Studio 2022\Code C#\Tic-Tac-Toe\Client_tic-tac-toe\Client_tic-tac-toe\
 D:\Visual Studio 2022\Code C#\Tic-Tac-Toe\Client_tic-tac-toe\Client_tic-tac-toe\obj\Debug\net7.0-windows\Client_tic-tac-toe.pdb
 D:\Visual Studio 2022\Code C#\Tic-Tac-Toe\Client_tic-tac-toe\Client_tic-tac-toe\obj\Debug\net7.0-windows\Client_tic-tac-toe.genruntimeconfig.cache
 D:\Visual Studio 2022\Code C#\Tic-Tac-Toe\Client_tic-tac-toe\Client_tic-tac-toe\obj\Debug\net7.0-windows\ref\Client_tic-tac-toe.dll
+D:\Visual Studio 2022\Code C#\Tic-Tac-Toe\Client_tic-tac-toe\Client_tic-tac-toe\obj\Debug\net7.0-windows\Client_tic_tac_toe.PageModeSelection.resources
