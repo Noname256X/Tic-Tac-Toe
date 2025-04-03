@@ -13,16 +13,21 @@ namespace Client_tic_tac_toe
 
         private async void btnLogin_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtNickname.Text) ||
-                string.IsNullOrWhiteSpace(txtPassword.Text))
+            string nickname = txtNickname.Text.Trim();
+            string password = txtPassword.Text;
+
+            if (string.IsNullOrWhiteSpace(nickname) || string.IsNullOrWhiteSpace(password))
             {
                 ApiClient.ShowError("Заполните все поля!");
                 return;
             }
 
-            var success = await ApiClient.Login(txtNickname.Text, txtPassword.Text);
+            var success = await ApiClient.Login(nickname, password);
             if (success)
             {
+                Properties.Settings.Default.CurrentUser = nickname;
+                Properties.Settings.Default.Save();
+
                 ApiClient.NavigateTo(this, new PageModeSelection());
             }
             else
@@ -30,6 +35,7 @@ namespace Client_tic_tac_toe
                 ApiClient.ShowError("Неверный логин или пароль");
             }
         }
+
 
         private void btnBack_Click(object sender, EventArgs e)
         {

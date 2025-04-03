@@ -47,6 +47,21 @@ public static class ApiClient
         }
     }
 
+    public static async Task<UserData> GetUserData(string nickname)
+    {
+        try
+        {
+            var response = await _client.GetAsync($"{BaseUrl}/api/account?nickname={nickname}");
+            if (!response.IsSuccessStatusCode) return null;
+
+            return await response.Content.ReadFromJsonAsync<UserData>();
+        }
+        catch
+        {
+            throw new Exception("Не удалось получить данные аккаунта");
+        }
+    }
+
 
     public static void ShowError(string message)
     {

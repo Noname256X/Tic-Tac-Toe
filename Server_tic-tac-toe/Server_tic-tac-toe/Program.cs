@@ -19,6 +19,7 @@ var connectionString =
     $"Username={Environment.GetEnvironmentVariable("DB_USERNAME")}; " +
     $"Password={Environment.GetEnvironmentVariable("DB_PASSWORD")}; " +
     $"Database={Environment.GetEnvironmentVariable("DB_NAME")}";
+
 var conn = new NpgsqlConnection(connectionString);
 try
 {
@@ -88,6 +89,41 @@ app.MapPost("/api/register", async (RegisterRequest request) =>
         return Results.Problem("Internal error");
     }
 });
+
+// Добавьте после регистрации и до UseCors
+app.MapGet("/api/account", async (string nickname) =>
+{
+    try
+    {
+        using var conn = new NpgsqlConnection(connectionString);
+        await conn.OpenAsync();
+
+        var cmd = new NpgsqlCommand(
+            @"SELECT username, games_played, win_rate 
+            FROM players WHERE username = @nickname",
+            conn);
+
+        cmd.Parameters.AddWithValue("nickname", nickname);
+        var reader = await cmd.ExecuteReaderAsync();
+
+        if (reader.Read())
+        {
+            return Results.Ok(new
+            {
+                Username = reader["username"],
+                GamesPlayed = reader["games_played"],
+                WinRate = reader["win_rate"]
+            });
+        }
+        return Results.NotFound();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Account data error: {ex.Message}");
+        return Results.Problem("Internal error");
+    }
+});
+
 
 app.UseCors(policy => policy
     .AllowAnyHeader()

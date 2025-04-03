@@ -26,6 +26,7 @@
             // btnAccount
             // 
             this.btnAccount.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+            this.btnAccount.Font = new System.Drawing.Font("Arial", 10F);
             this.btnAccount.Location = new System.Drawing.Point(164, 10);
             this.btnAccount.Name = "btnAccount";
             this.btnAccount.Size = new System.Drawing.Size(126, 38);
@@ -35,6 +36,7 @@
             // 
             // btnCreateGame
             // 
+            this.btnCreateGame.Font = new System.Drawing.Font("Arial", 10F);
             this.btnCreateGame.Location = new System.Drawing.Point(87, 90);
             this.btnCreateGame.Name = "btnCreateGame";
             this.btnCreateGame.Size = new System.Drawing.Size(126, 38);
@@ -44,6 +46,7 @@
             // 
             // btnJoinGame
             // 
+            this.btnJoinGame.Font = new System.Drawing.Font("Arial", 10F);
             this.btnJoinGame.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.btnJoinGame.Location = new System.Drawing.Point(87, 172);
             this.btnJoinGame.Name = "btnJoinGame";

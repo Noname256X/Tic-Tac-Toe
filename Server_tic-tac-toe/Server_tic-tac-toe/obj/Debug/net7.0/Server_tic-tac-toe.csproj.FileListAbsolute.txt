@@ -44,3 +44,5 @@ D:\Visual Studio 2022\Code C#\Tic-Tac-Toe\Server_tic-tac-toe\Server_tic-tac-toe\
 D:\Visual Studio 2022\Code C#\Tic-Tac-Toe\Server_tic-tac-toe\Server_tic-tac-toe\bin\Debug\net7.0\BCrypt.Net-Core.dll
 D:\Visual Studio 2022\Code C#\Tic-Tac-Toe\Server_tic-tac-toe\Server_tic-tac-toe\bin\Debug\net7.0\Npgsql.dll
 D:\Visual Studio 2022\Code C#\Tic-Tac-Toe\Server_tic-tac-toe\Server_tic-tac-toe\bin\Debug\net7.0\System.Text.Json.dll
+D:\Visual Studio 2022\Code C#\Tic-Tac-Toe\Server_tic-tac-toe\Server_tic-tac-toe\bin\Debug\net7.0\DotNetEnv.dll
+D:\Visual Studio 2022\Code C#\Tic-Tac-Toe\Server_tic-tac-toe\Server_tic-tac-toe\bin\Debug\net7.0\Sprache.dll

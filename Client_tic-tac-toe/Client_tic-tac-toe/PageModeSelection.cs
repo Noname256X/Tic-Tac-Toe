@@ -16,7 +16,7 @@ namespace Client_tic_tac_toe
             accountForm.Show();
             this.Hide();
         }
-
+        
         private void btnCreateGame_Click(object sender, EventArgs e)
         {
             var gameForm = new PageGame();
