@@ -18,7 +18,12 @@ namespace Client_tic_tac_toe
 
         private async void PageAccount_Load(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(_currentUser)) return;
+            if (string.IsNullOrEmpty(_currentUser))
+            {
+                ApiClient.ShowError("Необходимо авторизоваться!");
+                this.Close();
+                return;
+            }
 
             try
             {

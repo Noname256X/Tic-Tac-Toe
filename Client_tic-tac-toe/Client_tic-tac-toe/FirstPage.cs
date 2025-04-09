@@ -1,5 +1,6 @@
-﻿using System.Windows.Forms;
-using System;
+﻿using System;
+using System.Windows.Forms;
+using System.Net.Http;
 
 namespace Client_tic_tac_toe
 {
@@ -11,19 +12,61 @@ namespace Client_tic_tac_toe
             this.StartPosition = FormStartPosition.CenterScreen;
         }
 
-        private void btnAuth_Click(object sender, EventArgs e)
+        private bool ValidateServerAddress()
         {
-            ApiClient.NavigateTo(this, new PageAutorization());
+            var serverAddress = txtServerAddress.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(serverAddress))
+            {
+                ApiClient.ShowError("Введите адрес сервера!");
+                return false;
+            }
+
+            if (!Uri.TryCreate(serverAddress, UriKind.Absolute, out _))
+            {
+                ApiClient.ShowError("Неверный формат адреса сервера!\nПример: http://localhost:5000");
+                return false;
+            }
+
+            return true;
+        }
+
+        private async void btnAuth_Click(object sender, EventArgs e)
+        {
+            if (!ValidateServerAddress()) return;
+
+            try
+            {
+                ApiClient.SetBaseUrl(txtServerAddress.Text.Trim());
+                var isAvailable = await ApiClient.CheckServerAvailability();
+               
+                if (!isAvailable)
+                {
+                    ApiClient.ShowError("Сервер недоступен!");
+                    return;
+                }
+
+                ApiClient.NavigateTo(this, new PageAutorization());
+            }
+            catch (Exception ex)
+            {
+                ApiClient.ShowError($"Ошибка подключения: {ex.Message}");
+            }
         }
 
         private void btnReg_Click(object sender, EventArgs e)
         {
-            ApiClient.NavigateTo(this, new PageRegistration());
-        }
+            if (!ValidateServerAddress()) return;
 
-        private void FirstPage_Load(object sender, EventArgs e)
-        {
-
+            try
+            {
+                ApiClient.SetBaseUrl(txtServerAddress.Text.Trim());
+                ApiClient.NavigateTo(this, new PageRegistration());
+            }
+            catch (Exception ex)
+            {
+                ApiClient.ShowError($"Не удалось подключиться к серверу: {ex.Message}");
+            }
         }
     }
 }

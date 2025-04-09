@@ -1,20 +1,29 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net7.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
-    <Platforms>AnyCPU</Platforms>
+    <Platforms>AnyCPU;x86</Platforms>
     <ApplicationIcon />
     <RootNamespace>Client_tic_tac_toe</RootNamespace>
     <AssemblyName>Client_tic-tac-toe</AssemblyName>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
+    <BaseOutputPath>D:\Visual Studio 2022\Code C#\Tic-Tac-Toe\Client_tic-tac-toe\Client_tic-tac-toe\bin\Release</BaseOutputPath>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
   <!-- Конфигурации сборки -->
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
@@ -29,15 +38,22 @@
     <DebugType>pdbonly</DebugType>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <DebugType>pdbonly</DebugType>
+  </PropertyGroup>
+
   <!-- NuGet пакеты -->
   <ItemGroup>
-    <PackageReference Include="Microsoft.Windows.Compatibility" Version="8.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.3" />
+	<PackageReference Include="Microsoft.Windows.Compatibility" Version="8.0.0" />
+	<PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.3" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
-    <PackageReference Include="System.Text.Json" Version="8.0.4" />
+	<PackageReference Include="System.Text.Json" Version="8.0.5" />
     <PackageReference Include="Microsoft.VisualBasic" Version="10.3.0" />
     <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="8.0.0" />
-    <PackageReference Include="System.IO.Pipelines" Version="8.0.0" />
+	<PackageReference Include="System.IO.Pipelines" Version="8.0.0" />
     <PackageReference Include="System.Threading.Channels" Version="8.0.0" />
   </ItemGroup>
 
@@ -92,6 +108,8 @@
     <EmbeddedResource Include="PageAutorization.resx">
       <DependentUpon>PageAutorization.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="PageGame.resx" />
+    <EmbeddedResource Include="PageLobby.resx" />
     <EmbeddedResource Include="PageModeSelection.resx" />
     <EmbeddedResource Include="PageRegistration.resx" />
     <EmbeddedResource Include="Properties\Resources.resx">

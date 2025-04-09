@@ -16,10 +16,10 @@ namespace Client_tic_tac_toe
             accountForm.Show();
             this.Hide();
         }
-        
+
         private void btnCreateGame_Click(object sender, EventArgs e)
         {
-            var gameForm = new PageGame();
+            var gameForm = new PageGame(true);
             gameForm.Show();
             this.Hide();
         }
@@ -30,5 +30,6 @@ namespace Client_tic_tac_toe
             lobbyForm.Show();
             this.Hide();
         }
+
     }
 }

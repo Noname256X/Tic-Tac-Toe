@@ -19,9 +19,14 @@ namespace Client_tic_tac_toe
                 return;
             }
 
-            var success = await ApiClient.Register(txtNickname.Text, txtPassword.Text);
+            var nickname = txtNickname.Text.Trim();
+            var success = await ApiClient.Register(nickname, txtPassword.Text);
+
             if (success)
             {
+                Properties.Settings.Default.CurrentUser = nickname;
+                Properties.Settings.Default.Save();
+
                 ApiClient.NavigateTo(this, new PageModeSelection());
             }
             else
